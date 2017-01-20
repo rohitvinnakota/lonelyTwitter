@@ -33,14 +33,13 @@ public class LonelyTwitterActivity extends Activity {
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
-
 		saveButton.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
-
 				Tweet tweet = new ImportantTweet("test string");
+				CurrentMood mood1 = new Happy();
+				CurrentMood mood2 = new Sad();
 				NormalTweet normalTweet = new NormalTweet("test string");
 
 				try {
@@ -51,14 +50,16 @@ public class LonelyTwitterActivity extends Activity {
 				}
 
 				String string = tweet.getMessage();
+				ArrayList<String> listofmoods = new ArrayList<String>();
+				listofmoods.add(mood1.moodRep());
+				listofmoods.add(mood2.moodRep());
+				tweet.setListofmoods(listofmoods);
 
 				ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
 				tweetList.add(tweet);
 				tweetList.add(normalTweet);
-
 				saveInFile(text, new Date(System.currentTimeMillis()));
 				finish();
-
 			}
 		});
 	}
