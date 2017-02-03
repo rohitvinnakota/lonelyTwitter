@@ -11,7 +11,6 @@
 		import java.io.OutputStreamWriter;
 		import java.util.ArrayList;
 		import java.util.Date;
-
 		import android.app.Activity;
 		import android.content.Context;
 		import android.os.Bundle;
@@ -24,18 +23,54 @@
 		import com.google.gson.Gson;
 		import com.google.gson.reflect.TypeToken;
 
-public class LonelyTwitterActivity extends Activity {
+		/**
+		 * This class is the main view class of teh project. <br> In this class, teh user interaction
+		 * and file mainpulation is performed.
+		 * All files are in the form of "json" files that are stored in the Emulator's
+		 * accessible from Android Device Monitor:
+		 * <pre>
+		 *     pre-formatted test: <br>
+		 *         File Explores -> data -> data -> ca.ualberta.cs.lonelytwitter -> files -> files.sav.
+		 * </pre>
+		 * <code> begin <br>
+		 *     some psuedo code hre <br>
+		 * end.</code>
+		 * The file name is indicated in the &nbsp &nbsp &nbsp FILENAME constant.
+		 * <ul>
+		 *     <li>item 1</li>
+		 *     <li>item 2</li>
+		 *     <li>item 3</li>
+		 * </ul>
+		 * <ol>
+		 *     <li>item 1</li>
+		 *     <li>item 2</li>
+		 *     <li>item 3</li>
+		 * </ol>
+		 *
+		 * @author vinnakot
+		 * @version 1.4.2
+		 * @since 1.0
+		 */
+		public class LonelyTwitterActivity extends Activity {
+			/**
+			 * The file that all the tweets are saved  there.
+			 * The format of the file is JSON.
+			 * @see #loadFromFile()
+			 * @see #saveInFile()
+			 */
 
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
-
+	private enum TweetListOrdering {DATE_ASCENDING, DATE_DESCENDING, TEXT_ASCENDING,
+		TEXT_DESCENDING};
 	private ArrayList<Tweet> tweetList;
 	private ArrayAdapter<Tweet> adapter;
 
-	/**
-	 * Called when the activity is first created.
-	 */
+			/**
+			 * Called when the activity is first created
+ 			 * @param savedInstanceState
+             */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,11 +84,8 @@ public class LonelyTwitterActivity extends Activity {
 		clearButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-
 				tweetList.clear();
-
 				adapter.notifyDataSetChanged();
-
 				saveInFile();
 			}
 		});
@@ -63,13 +95,10 @@ public class LonelyTwitterActivity extends Activity {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
-
+				text = trimExtraSpaces(text);
 				Tweet tweet = new NormalTweet(text);
-
 				tweetList.add(tweet);
-
 				adapter.notifyDataSetChanged();
-
 				saveInFile();
 			}
 		});
@@ -86,6 +115,26 @@ public class LonelyTwitterActivity extends Activity {
 				R.layout.list_item, tweetList);
 		oldTweetsList.setAdapter(adapter);
 	}
+
+			/**
+			 * Removes extra spaces in the given string
+			 * @param inputString input string
+             * @return string without extra spaces
+             */
+	private String trimExtraSpaces(String inputString){
+		inputString = inputString.replaceAll("\\s+"," ");
+		return inputString;
+	}
+
+	private void sortTweetListItems(TweetListOrdering ordering){
+
+	}
+
+			/**
+			 * Loads tweets from file.
+			 * @throws TweetTooLongException if the tweet is too long
+			 * @exception FileNotFoundException if the file is not created
+			 */
 
 	private void loadFromFile() {
 		try {
@@ -104,6 +153,11 @@ public class LonelyTwitterActivity extends Activity {
 			throw new RuntimeException();
 		}
 	}
+
+			/**
+			 * Saves tweets in file in JSON format.
+			 * @throws FileNotFoundException if folder does not exist
+			 */
 
 	private void saveInFile() {
 		try {
