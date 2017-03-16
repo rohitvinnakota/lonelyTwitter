@@ -17,9 +17,11 @@ public class EditTweetActivity extends Activity {
         textview.setText(x);
 
     }
+    //Removed returnX()
+    /*
     public String returnX(){
         return "Test Tweet!";
-    }
+    }*/
 
 
 }
